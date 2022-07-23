@@ -1,4 +1,5 @@
 using LoggingTool.Model;
+using LoggingTool.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<LoggingToolContext>(options =>
            options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("LocalCs")));
+builder.Services.AddScoped<ILoginRepository,LoginRepository>();
 builder.Services.AddIdentity<User, IdentityRole>(o => o.Password = new PasswordOptions
 {
     RequireDigit = true,
@@ -20,6 +22,7 @@ builder.Services.AddIdentity<User, IdentityRole>(o => o.Password = new PasswordO
     RequireUppercase = true,
     RequireNonAlphanumeric = false
 }).AddEntityFrameworkStores<LoggingToolContext>();
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddCors();
 var app = builder.Build();
 
