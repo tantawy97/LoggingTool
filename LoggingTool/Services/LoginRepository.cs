@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LoggingTool.Common;
 using LoggingTool.Dtos;
 using LoggingTool.Model;
 using Microsoft.EntityFrameworkCore;
@@ -8,12 +9,12 @@ namespace LoggingTool.Services
     public class LoginRepository : ILoginRepository
     {
         private readonly LoggingToolContext db;
-        private readonly IMapper mapper;
+        private readonly IMapper imapper;
 
-        public LoginRepository(LoggingToolContext db, IMapper mapper)
+        public LoginRepository(LoggingToolContext db, IMapper imapper)
         {
             this.db = db;
-            this.mapper = mapper;
+            this.imapper = imapper;
         }
         public Task<List<Login>> GetAll()
         {
@@ -21,14 +22,15 @@ namespace LoggingTool.Services
         }
         public void Add(LoginDetails loginDetails)
         {
-            var loginData=mapper.Map<LoginDetails>(loginDetails);
-            db.AddAsync(loginData);
+            loginDetails.Password = SharedFunction.EncryptPassword(loginDetails.Password);
+            var login = imapper.Map<Login>(loginDetails);
+            db.Logins.AddAsync(login);
             db.SaveChangesAsync();
         }
         public void Edit(Login login)
         {
-        
-            if(login != null)
+
+            if (login != null)
             {
 
                 db.Logins.Update(login);
