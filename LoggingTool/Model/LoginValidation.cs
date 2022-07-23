@@ -1,8 +1,9 @@
 ﻿using FluentValidation;
+using LoggingTool.Dtos;
 
 namespace LoggingTool.Model
 {
-    public class LoginValidation : AbstractValidator<Login>
+    public class LoginValidation : AbstractValidator<LoginDetails>
     {
         public LoginValidation()
         {
@@ -19,7 +20,7 @@ namespace LoggingTool.Model
                 NotNull().
                 NotEmpty().
                 WithMessage("Please Enter Your Password").
-                Length(8, 20).WithMessage("Length of Password is between 8 to 20");
+                Length(8, 20).WithMessage("Length of Password is Must be between 8 to 20");
             RuleFor(w => w.Website).Cascade(CascadeMode.StopOnFirstFailure).
                 NotNull().
                 NotEmpty().
