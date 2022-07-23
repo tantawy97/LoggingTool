@@ -1,19 +1,22 @@
+using FluentValidation.AspNetCore;
 using LoggingTool.Model;
 using LoggingTool.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().
+    AddFluentValidation(w => w.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<LoggingToolContext>(options =>
            options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("LocalCs")));
-builder.Services.AddScoped<ILoginRepository,LoginRepository>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddIdentity<User, IdentityRole>(o => o.Password = new PasswordOptions
 {
     RequireDigit = true,
