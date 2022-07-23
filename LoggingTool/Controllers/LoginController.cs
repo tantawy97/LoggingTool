@@ -2,6 +2,7 @@
 using LoggingTool.Dtos;
 using LoggingTool.Model;
 using LoggingTool.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,17 +10,17 @@ namespace LoggingTool.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class LoginController : ControllerBase
     {
         private readonly ILoginRepository loginRepo;
-        private readonly IMapper imapper;
 
-        public LoginController(ILoginRepository loginRepo, IMapper imapper)
+
+        public LoginController(ILoginRepository loginRepo)
         {
             this.loginRepo = loginRepo;
-            this.imapper = imapper;
         }
-        [HttpGet]
+        [HttpGet("Logins")]
         public async Task<List<Login>> GetAll()
         {
             return await loginRepo.GetAll();
@@ -33,6 +34,26 @@ namespace LoggingTool.Controllers
             }
             loginRepo.Add(loginDetails);
             return Ok(loginDetails);
+        }
+        [HttpPut("{id}")]
+        public IActionResult Edit(int id,LoginDetails loginDetails)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Enter valid Data");
+            }
+            loginRepo.Edit(id, loginDetails);
+            return Ok("Updated Successfully");
+        }
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest("Enter valid Id");
+            }
+            loginRepo.Delete(id);
+            return Ok("Deleted Successfully");
         }
     }
 }

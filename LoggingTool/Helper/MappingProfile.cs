@@ -8,7 +8,7 @@ namespace LoggingTool.Helper
     {
         public MappingProfile()
         {
-            CreateMap<LoginDetails,Login>().ForMember(src=>src.User,opt=>opt.Ignore());
+            CreateMap<LoginDetails,Login>();
 
         }
     }
