@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using LoggingTool.DatabaseSeed;
 using LoggingTool.Helper;
 using LoggingTool.Model;
 using LoggingTool.Services;
@@ -18,6 +19,7 @@ AddFluentValidation(w => w.RegisterValidatorsFromAssembly(Assembly.GetExecutingA
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<DataSeeder>();
 builder.Services.AddDbContext<LoggingToolContext>(options =>
            options.UseSqlServer(builder.Configuration.GetConnectionString("LocalCs")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -52,8 +54,23 @@ builder.Services.AddAuthentication(options =>
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
                    };
                });
-
 var app = builder.Build();
+
+    SeedData(app);
+
+
+async void SeedData(IHost app)
+{
+    var userService = app.Services.GetService<IServiceScopeFactory>();
+    //var UserManager = app.Services.GetService<UserManager<User>>();
+    //var RoleManager = app.Services.GetService<RoleManager<IdentityRole>>();
+    using (var Scope = userService.CreateScope())
+    {
+        var service=Scope.ServiceProvider.GetService<DataSeeder>();
+        await service.CreateUsersAndRolesAsync();
+    }
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

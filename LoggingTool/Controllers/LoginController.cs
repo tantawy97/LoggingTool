@@ -15,7 +15,7 @@ namespace LoggingTool.Controllers
     {
         private readonly ILoginRepository loginRepo;
 
-
+        
         public LoginController(ILoginRepository loginRepo)
         {
             this.loginRepo = loginRepo;
