@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using LoggingTool.Helper;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoggingTool.Model
@@ -12,6 +13,7 @@ namespace LoggingTool.Model
         public LoggingToolContext(DbContextOptions<LoggingToolContext> options) : base(options)
         {
         }
+       
     }
 
    

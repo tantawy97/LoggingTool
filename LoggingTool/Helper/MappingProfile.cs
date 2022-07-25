@@ -8,7 +8,7 @@ namespace LoggingTool.Helper
     {
         public MappingProfile()
         {
-            CreateMap<LoginDetails,Login>();
+            CreateMap<LoginDetails,Login>().ReverseMap();
 
         }
     }

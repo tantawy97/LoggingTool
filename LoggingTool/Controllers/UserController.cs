@@ -21,7 +21,7 @@ namespace LoggingTool.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await userRepository.Login(model);
+            var result = await userRepository.SignIn(model);
 
             if (!result.IsAuthenticated)
                 return BadRequest(result.Message);

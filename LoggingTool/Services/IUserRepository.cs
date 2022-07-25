@@ -6,6 +6,6 @@ namespace LoggingTool.Services
     public interface IUserRepository
     {
         Task<User> Register(User user);
-       Task< AuthDto> Login(LoginDto user);
+       Task< AuthDto> SignIn(LoginDto user);
     }
 }
