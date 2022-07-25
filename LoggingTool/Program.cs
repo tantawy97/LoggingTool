@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
-
+using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -54,11 +54,22 @@ builder.Services.AddAuthentication(options =>
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
                    };
                });
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+try
+{
+    logger.Information("application start");
+}
+catch (Exception ex)
+{
+    logger.Fatal(ex, "The Application Failed To Start");
+}
 var app = builder.Build();
-
-    SeedData(app);
-
-
+SeedData(app);
 async void SeedData(IHost app)
 {
     var userService = app.Services.GetService<IServiceScopeFactory>();
@@ -66,7 +77,7 @@ async void SeedData(IHost app)
     //var RoleManager = app.Services.GetService<RoleManager<IdentityRole>>();
     using (var Scope = userService.CreateScope())
     {
-        var service=Scope.ServiceProvider.GetService<DataSeeder>();
+        var service = Scope.ServiceProvider.GetService<DataSeeder>();
         await service.CreateUsersAndRolesAsync();
     }
 }
