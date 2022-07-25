@@ -57,6 +57,21 @@ namespace LoggingTool.DatabaseSeed
                 };
                 await userManager.CreateAsync(newAppUser, "Password1");
                 await userManager.AddToRoleAsync(newAppUser, Roles.User);
+            } 
+            string appUser2Email = "user2@email.com";
+
+            var appUser2 = await userManager.FindByEmailAsync(appUser2Email);
+            if (appUser2 == null)
+            {
+                var newAppUser = new User()
+                {
+                   
+                    UserName = "user2",
+                    Email = appUser2Email,
+                    EmailConfirmed = true
+                };
+                await userManager.CreateAsync(newAppUser, "Password1");
+                await userManager.AddToRoleAsync(newAppUser, Roles.User);
             }
         }
     }

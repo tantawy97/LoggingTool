@@ -8,22 +8,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LoggingTool.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="User")]
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
         private readonly ILoginRepository loginRepo;
+        private readonly ILogger<LoginController> logger;
 
-        
-        public LoginController(ILoginRepository loginRepo)
+        public LoginController(ILoginRepository loginRepo , ILogger<LoginController> logger)
         {
             this.loginRepo = loginRepo;
+            this.logger = logger;
         }
-        [HttpGet("Logins")]
-        public async Task<List<LoginDetails>> GetAll()
+       
+        [HttpGet]
+        public async Task<List<LoginDetails>> GetByUserId([FromBody] string id)
         {
-            return await loginRepo.GetAll();
+            return await loginRepo.GetByUserId(id);
         }
         [HttpPost]
         public IActionResult Add(LoginDetails loginDetails)
@@ -33,6 +35,7 @@ namespace LoggingTool.Controllers
                 return BadRequest("Enter valid Data");
             }
             loginRepo.Add(loginDetails);
+            logger.LogInformation("Added Successfully");
             return Ok(loginDetails);
         }
         [HttpPut("{id}")]
@@ -42,6 +45,7 @@ namespace LoggingTool.Controllers
             {
                 return BadRequest("Enter valid Data");
             }
+            logger.LogInformation("Updated Successfully");
             loginRepo.Edit(id, loginDetails);
             return Ok("Updated Successfully");
         }
