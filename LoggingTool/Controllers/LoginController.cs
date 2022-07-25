@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LoggingTool.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class LoginController : ControllerBase
     {
         private readonly ILoginRepository loginRepo;
@@ -21,7 +21,7 @@ namespace LoggingTool.Controllers
             this.loginRepo = loginRepo;
         }
         [HttpGet("Logins")]
-        public async Task<List<Login>> GetAll()
+        public async Task<List<LoginDetails>> GetAll()
         {
             return await loginRepo.GetAll();
         }

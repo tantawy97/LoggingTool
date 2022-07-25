@@ -5,7 +5,7 @@ namespace LoggingTool.Services
 {
     public interface ILoginRepository
     {
-        Task<List<Login>> GetAll();
+        Task<List<LoginDetails>> GetAll();
         void Edit(int id,LoginDetails loginDetails);
         void Add(LoginDetails loginDetails);
         void Delete(int id);

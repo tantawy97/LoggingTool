@@ -19,9 +19,11 @@ namespace LoggingTool.Services
             this.imapper = imapper;
            
         }
-        public Task<List<Login>> GetAll()
+        public async Task<List<LoginDetails>> GetAll()
         {
-            return db.Logins.ToListAsync();
+            var Logins =await  db.Logins.ToListAsync();
+            
+            return imapper.Map<List<LoginDetails>>(Logins);
         }
         public void Add(LoginDetails loginDetails)
         {
