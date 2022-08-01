@@ -24,21 +24,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "v1",
-        Title = "MoviesApi",
-        Description = "My first api",
-        TermsOfService = new Uri("https://www.google.com"),
-        Contact = new OpenApiContact
-        {
-            Name = "DevCreed",
-            Email = "test@domain.com",
-            Url = new Uri("https://www.google.com")
-        },
-        License = new OpenApiLicense
-        {
-            Name = "My license",
-            Url = new Uri("https://www.google.com")
-        }
+       
     });
 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
