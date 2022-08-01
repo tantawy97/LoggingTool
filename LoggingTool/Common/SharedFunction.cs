@@ -20,7 +20,7 @@ namespace LoggingTool.Common
         {
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(password + key));
         }
-        public  string DencryptPassword(string encryptPassword)
+        public  string DecryptPassword(string encryptPassword)
         {
             var result = Encoding.UTF8.GetString(Convert.FromBase64String(encryptPassword));
             result = result.Substring(0, result.Length - key.Length);

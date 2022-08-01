@@ -1,0 +1,46 @@
+﻿@page "/"
+@using System.Net.Http.Json
+@using LoggingTool.Dtos
+<PageTitle>Index</PageTitle>
+@if(result==null){
+    <div>Loading....</div>
+}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">UserName</th>
+      <th scope="col">Website</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+       @foreach(var item in result){
+    <tr>
+      <th scope="row">@(Counter++)</th>
+      <td>@item.UserName</td>
+      <td>@item.Website</td>
+      <td><a href="edit/@item.Id"> Edit</a></td>
+      <td><a href="delete/@item.Id"  > Delete</a></td>
+            </tr>
+            
+        }
+  </tbody>
+</table>
+<a class="btn btn-primary" href="/Add">Add</a>
+@code {
+    [Inject]
+    HttpClient Http { get; set; }
+    int Counter = 1;
+    List<LoginDetailsDto> result=new List<LoginDetailsDto>();
+    protected override async Task OnInitializedAsync()
+    {
+
+        result= await Http.GetFromJsonAsync<List<LoginDetailsDto>>("http://localhost:5295/api/AllLogins/AllLogins");   
+    }
+    protected async Task delete(string Id)
+    {
+        await Http.DeleteAsync("http://localhost:5295/api/Login/{Id}");
+    }
+}

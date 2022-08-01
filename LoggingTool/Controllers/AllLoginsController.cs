@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LoggingTool.Controllers
 {
-    [Authorize(Roles = "Admin")]
+//[Authorize(Roles ="Admin")]   
     [Route("api/[controller]")]
     [ApiController]
     public class AllLoginsController : ControllerBase
@@ -20,7 +20,7 @@ namespace LoggingTool.Controllers
             
         }
         [HttpGet("AllLogins")]
-        public async Task<List<LoginDetails>> GetAll()
+        public async Task<List<LoginDetailsDto>> GetAll()
         {
             return await loginRepo.GetAll();
         }

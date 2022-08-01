@@ -23,20 +23,20 @@ namespace LoggingTool.Services
             this.usermanager = usermanager;
             this.signInManager = signInManager;
         }
-        public async Task<List<LoginDetails>> GetAll()
+        public async Task<List<LoginDetailsDto>> GetAll()
         {
             var Logins = await db.Logins.ToListAsync();
 
-            return imapper.Map<List<LoginDetails>>(Logins);
+            return imapper.Map<List<LoginDetailsDto>>(Logins);
         }
-        public void Add(LoginDetails loginDetails)
+        public void Add(LoginDetailsDto loginDetails)
         {
             loginDetails.Password = sf.EncryptPassword(loginDetails.Password);
             var login = imapper.Map<Login>(loginDetails);
             db.Logins.Add(login);
             db.SaveChanges();
         }
-        public void Edit(int id, LoginDetails loginDetails)
+        public void Edit(int id, LoginDetailsDto loginDetails)
         {
 
             if (loginDetails != null)
@@ -57,10 +57,19 @@ namespace LoggingTool.Services
             db.SaveChanges();
         }
 
-        public async Task<List<LoginDetails>> GetByUserId(string id)
+        public async Task<List<LoginDetailsDto>> GetByUserId(string id)
         {
             var Logins = await db.Logins?.Where(w => w.UserId == id).ToListAsync();
-            return imapper.Map<List<LoginDetails>>(Logins);
+            foreach(var item in Logins)
+           item.Password= sf.DecryptPassword(item.Password);
+            return imapper.Map<List<LoginDetailsDto>>(Logins);
+        }
+
+        public LoginDetailsDto GetbyId(int id)
+        {
+            var Login = db.Logins.Find(id);
+            Login.Password= sf.DecryptPassword(Login.Password);
+            return imapper.Map<LoginDetailsDto>(Login);
         }
     }
 }

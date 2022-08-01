@@ -27,7 +27,7 @@ namespace LoggingTool.Services
         {
             var authModel = new AuthDto();
 
-            var user = await _userManager.FindByEmailAsync(model.Email.Trim());
+            var user = await _userManager.FindByEmailAsync(model?.Email?.Trim());
 
             if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
