@@ -2,7 +2,7 @@
  create crud in logins 
 
 
-Login Email=User1@email.com
+Login Email=User@email.com
 Login Email=User2@email.com
 Login Email=Admin@email.com
 
