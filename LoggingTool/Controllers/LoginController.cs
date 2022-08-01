@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoggingTool.Controllers
-{
+{//[Authorize(Roles ="Admin")] 
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
