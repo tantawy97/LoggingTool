@@ -1,0 +1,49 @@
+﻿@page "/login"
+@using Blazored.LocalStorage
+@using LoggingTool.Dtos
+@using LoggingTool.Model
+ @using Newtonsoft.Json
+ @inject NavigationManager NavigationManager
+
+
+<h3>SignIn</h3>
+<EditForm Model="@loginDto">
+    <span class="text text-danger">@error</span>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <InputText type="text" @bind-Value="@loginDto.Email"  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"></InputText>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <InputText type="password"  @bind-Value="@loginDto.Password" class="form-control" id="exampleInputPassword1" placeholder="Password"></InputText>
+  </div>
+  <button type="submit" class="btn btn-primary" @onclick="SignInMethod">SignIn</button>
+</EditForm>
+
+
+@code {
+    [Inject]
+    HttpClient Http { get; set; }
+    LoginDto loginDto=new LoginDto() ;
+    private AuthDto t;
+    private User user;
+    public string Message { get; set; }
+    private string error;
+
+    protected async Task SignInMethod()
+    {
+        HttpResponseMessage result = await Http.PostAsJsonAsync("http://localhost:5295/api/User/signin", loginDto);
+        if (result.IsSuccessStatusCode)
+        {
+            t = await result.Content.ReadFromJsonAsync<AuthDto>();
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            error = await result.Content.ReadAsStringAsync();
+           
+
+        }
+
+    }
+}

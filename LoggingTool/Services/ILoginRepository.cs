@@ -5,10 +5,11 @@ namespace LoggingTool.Services
 {
     public interface ILoginRepository
     {
-        Task<List<LoginDetails>> GetAll();
-        Task<List<LoginDetails>> GetByUserId(string Id);
-        void Edit(int id,LoginDetails loginDetails);
-        void Add(LoginDetails loginDetails);
+        Task<List<LoginDetailsDto>> GetAll();
+        Task<List<LoginDetailsDto>> GetByUserId(string Id);
+        void Edit(int id,LoginDetailsDto loginDetails);
+        LoginDetailsDto GetbyId(int id);
+        void Add(LoginDetailsDto loginDetails);
         void Delete(int id);
     }
 }

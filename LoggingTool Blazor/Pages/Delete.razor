@@ -1,0 +1,20 @@
+﻿@page "/Delete/{Id}"
+ @inject NavigationManager NavigationManager
+
+
+@code {
+    [Inject]
+    HttpClient Http { get; set; }
+    [Parameter]
+    public string Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Http.DeleteAsync($"http://localhost:5295/api/Login/{Id}");
+        
+            NavigationManager.NavigateTo("/");
+        
+    }
+
+  
+}

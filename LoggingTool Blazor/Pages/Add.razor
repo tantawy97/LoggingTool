@@ -1,0 +1,53 @@
+﻿@page "/Add"
+@using Blazored.FluentValidation
+@using Blazored.LocalStorage
+@using LoggingTool.Dtos
+@using LoggingTool.Model
+ @using Newtonsoft.Json
+ @inject NavigationManager NavigationManager
+
+
+<h3>SignIn</h3>
+<EditForm Model="@loginDetails">
+
+<FluentValidationValidator @ref="_fluentValidationValidator" />
+  <div class="form-group">
+    <label for="exampleInputEmail1">User Name </label>
+    <InputText type="text" @bind-Value="@loginDetails.UserName"  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder=" UserName"></InputText>
+   <ValidationMessage For="@(()=>loginDetails.UserName)"></ValidationMessage>
+</div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <InputText type="text"  @bind-Value="@loginDetails.Password" class="form-control" id="exampleInputPassword1" placeholder="Password"></InputText>
+  <ValidationMessage For="@(()=>loginDetails.Password)"></ValidationMessage>
+</div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Website</label>
+    <InputText type="text"  @bind-Value="@loginDetails.Website" class="form-control" id="exampleInputWebsote" placeholder="Website"></InputText>
+<ValidationMessage For="@(()=>loginDetails.Website)"></ValidationMessage>  
+</div>
+  <button type="submit" class="btn btn-primary" @onclick="AddLog">Add</button>
+</EditForm>
+
+
+@code {
+    [Inject]
+    HttpClient Http { get; set; }
+    private FluentValidationValidator _fluentValidationValidator;
+    LoginDetailsDto loginDetails=new LoginDetailsDto() ;
+  
+
+
+    protected async Task AddLog()
+    {
+       
+            HttpResponseMessage result = await Http.PostAsJsonAsync($"http://localhost:5295/api/Login", loginDetails);
+       if (result.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        
+       
+
+    }
+}

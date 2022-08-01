@@ -3,9 +3,9 @@ using LoggingTool.Dtos;
 
 namespace LoggingTool.Model
 {
-    public class LoginValidation : AbstractValidator<LoginDetailsDto>
+    public class LoginValidations : AbstractValidator<LoginDetailsDto>
     {
-        public LoginValidation()
+        public LoginValidations()
         {
             RuleFor(w => w.UserName).
                 NotNull().
@@ -27,12 +27,13 @@ namespace LoggingTool.Model
                 WithMessage("Please Enter WebSite").
                 OverridePropertyName("Web Site").
                 Length(5, 20).WithMessage("Length of User Name is between 5 to 20").
-                Must(w => w?.ToLower().StartsWith("www.") == true && w?.ToLower().EndsWith(".com") == true);
+                Must(w => w?.ToLower().StartsWith("www.") == true && w?.ToLower().EndsWith(".com") == true).
+                WithMessage("Please Enter Valid Email");
         }
     }
-        public class LoginDtoValidation : AbstractValidator<LoginDto>
+        public class LoginDtoValidations : AbstractValidator<LoginDto>
         {
-            public LoginDtoValidation()
+            public LoginDtoValidations()
             {
                 RuleFor(w => w.Email).
                     NotNull().
@@ -46,5 +47,5 @@ namespace LoggingTool.Model
             }
             
         }
-        
-}
+        }
+
